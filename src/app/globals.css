@@ -1,0 +1,173 @@
+@import "tailwindcss";
+
+@theme {
+  /* Surfaces */
+  --color-ink: #050606;
+  --color-graphite: #0a0c0c;
+  --color-graphite-soft: #101312;
+  --color-line: #20231f;
+  --color-line-soft: #161918;
+
+  /* Text */
+  --color-white-pure: #f4f7f4;
+  --color-muted: #828a85;
+  --color-muted-soft: #565d59;
+
+  /* Accent — acid platinum-green */
+  --color-acid: #c6f135;
+  --color-acid-dim: #9bbd28;
+
+  /* Type */
+  --font-display: "Unbounded", "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* Easing */
+  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--color-ink);
+  color: var(--color-white-pure);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-acid);
+  color: var(--color-ink);
+}
+
+::-webkit-scrollbar {
+  width: 9px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-ink);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-line);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-acid-dim);
+}
+
+/* ---------- Display / heading ---------- */
+.display {
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 0.94;
+  letter-spacing: -0.04em;
+}
+.display-tight {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+}
+
+/* Mono technical markers */
+.mono {
+  font-family: var(--font-mono);
+  font-weight: 400;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--color-acid);
+}
+
+/* ---------- Technical background grid ---------- */
+.grid-bg {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+.grid-bg-fade {
+  -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 35%, #000 30%, transparent 100%);
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 35%, #000 30%, transparent 100%);
+}
+
+/* Fine noise overlay */
+.grain::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------- Tech corner brackets (visor) ---------- */
+.tech-corners {
+  position: relative;
+}
+.tech-corners::before,
+.tech-corners::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: var(--color-acid);
+  opacity: 0.45;
+  transition: opacity 0.3s var(--ease-smooth);
+}
+.tech-corners::before {
+  top: 8px;
+  left: 8px;
+  border-top: 1.5px solid;
+  border-left: 1.5px solid;
+}
+.tech-corners::after {
+  bottom: 8px;
+  right: 8px;
+  border-bottom: 1.5px solid;
+  border-right: 1.5px solid;
+}
+.tech-corners:hover::before,
+.tech-corners:hover::after {
+  opacity: 1;
+}
+
+/* Inner glow for panels */
+.panel-glow {
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.04),
+    inset 0 0 60px -30px rgba(198, 241, 53, 0.12);
+}
+
+/* Soft neon hover — "lit from within" instead of hard framed */
+.neon-hover {
+  transition:
+    box-shadow 0.5s var(--ease-smooth),
+    border-color 0.5s var(--ease-smooth),
+    transform 0.5s var(--ease-smooth);
+}
+.neon-hover:hover {
+  border-color: rgba(198, 241, 53, 0.35);
+  box-shadow:
+    inset 0 0 40px -20px rgba(198, 241, 53, 0.25),
+    0 18px 60px -24px rgba(198, 241, 53, 0.3);
+}
+
+/* Animated dashed scan line */
+@keyframes scan-x {
+  0% { background-position: 0 0; }
+  100% { background-position: 56px 0; }
+}
