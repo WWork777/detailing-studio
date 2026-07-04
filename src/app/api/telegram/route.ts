@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 const TELEGRAM_API_TIMEOUT_MS = 10_000;
+const DEFAULT_TELEGRAM_API_URL = "https://api.telegram.org";
 
 type LeadPayload = {
   name?: string;
@@ -44,14 +45,40 @@ function readTelegramError(text: string) {
   }
 }
 
-export async function POST(request: Request) {
-  const token = process.env.TELEGRAM_BOT_TOKEN;
-  const chatId = process.env.TELEGRAM_CHAT_ID;
-  const proxyUrl = process.env.TELEGRAM_PROXY_URL;
+function redactSecret(value: string, token?: string) {
+  let result = value;
+  if (token) {
+    result = result.split(token).join("<redacted>");
+  }
+  return result.replace(/\/bot[^/\s]+\/sendMessage/g, "/bot<redacted>/sendMessage");
+}
 
-  if (!token || !chatId || !proxyUrl) {
+function friendlyTelegramMessage(message: string) {
+  if (/chat not found/i.test(message)) {
+    return "Telegram chat not found: bot must be started in the target chat and TELEGRAM_CHAT_ID must match that chat.";
+  }
+  return message;
+}
+
+function getTelegramApiUrl() {
+  const proxyUrl = process.env.TELEGRAM_PROXY_URL?.trim();
+  const baseUrl = proxyUrl || DEFAULT_TELEGRAM_API_URL;
+  const withProtocol = /^https?:\/\//i.test(baseUrl) ? baseUrl : `https://${baseUrl}`;
+  return withProtocol.replace(/\/$/, "");
+}
+
+export async function POST(request: Request) {
+  const token = process.env.TELEGRAM_BOT_TOKEN?.trim();
+  const chatId = process.env.TELEGRAM_CHAT_ID?.trim();
+
+  if (!token || !chatId) {
+    const missing = [
+      token ? "" : "TELEGRAM_BOT_TOKEN",
+      chatId ? "" : "TELEGRAM_CHAT_ID",
+    ].filter(Boolean);
+
     return NextResponse.json(
-      { ok: false, message: "Telegram settings are not configured" },
+      { ok: false, message: `Telegram settings are not configured: ${missing.join(", ")}` },
       { status: 500 },
     );
   }
@@ -85,7 +112,7 @@ export async function POST(request: Request) {
 
   try {
     const telegramResponse = await fetch(
-      `${proxyUrl.replace(/\/$/, "")}/bot${token}/sendMessage`,
+      `${getTelegramApiUrl()}/bot${token}/sendMessage`,
       {
         method: "POST",
         headers: {
@@ -98,11 +125,14 @@ export async function POST(request: Request) {
     );
 
     if (!telegramResponse.ok) {
-      const telegramError = readTelegramError(await telegramResponse.text());
+      const telegramError = friendlyTelegramMessage(
+        redactSecret(readTelegramError(await telegramResponse.text()), token),
+      );
       console.error("Telegram lead request failed", {
         status: telegramResponse.status,
         statusText: telegramResponse.statusText,
         error: telegramError,
+        apiUrl: getTelegramApiUrl(),
       });
 
       return NextResponse.json(
@@ -114,9 +144,25 @@ export async function POST(request: Request) {
       );
     }
 
+    const telegramData = (await telegramResponse.json().catch(() => null)) as {
+      ok?: boolean;
+      description?: string;
+    } | null;
+
+    if (telegramData && telegramData.ok === false) {
+      return NextResponse.json(
+        {
+          ok: false,
+          message: friendlyTelegramMessage(telegramData.description || "Telegram request failed"),
+        },
+        { status: 502 },
+      );
+    }
+
     return NextResponse.json({ ok: true });
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Telegram request failed";
+    const rawMessage = error instanceof Error ? error.message : "Telegram request failed";
+    const message = redactSecret(rawMessage, token);
     console.error("Telegram lead request failed", { error: message });
     return NextResponse.json({ ok: false, message }, { status: 502 });
   } finally {

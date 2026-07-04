@@ -40,7 +40,7 @@ export type Stat = { value: number; suffix: string; label: string };
 export const STATS: Stat[] = [
   { value: 12, suffix: " лет", label: "Полируем, защищаем и восстанавливаем авто" },
   { value: 4200, suffix: "+", label: "Кузовов после полировки, керамики и пленки" },
-  { value: 9, suffix: " лет", label: "Гарантия на керамику и защитную пленку" },
+  { value: 2, suffix: " года", label: "Гарантия на керамику и защитную пленку" },
   { value: 100, suffix: "%", label: "Ручная работа без потоковой детейлинг-мойки" },
 ];
 
