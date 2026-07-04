@@ -59,13 +59,42 @@ const CONTACTS = [
 ];
 
 export function Footer() {
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  function onSubmit(e: FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setSent(true);
-    setTimeout(() => setSent(false), 4000);
-    e.currentTarget.reset();
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    setStatus("sending");
+    setErrorMessage("");
+
+    try {
+      const response = await fetch("/api/telegram", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.get("name"),
+          phone: formData.get("phone"),
+          car: formData.get("car"),
+        }),
+      });
+
+      const result = (await response.json().catch(() => null)) as { message?: string } | null;
+
+      if (!response.ok) {
+        throw new Error(result?.message || "Telegram request failed");
+      }
+
+      setStatus("sent");
+      form.reset();
+      setTimeout(() => setStatus("idle"), 4000);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "";
+      setErrorMessage(message);
+      setStatus("error");
+    }
   }
 
   return (
@@ -153,16 +182,30 @@ export function Footer() {
 
                 <MagneticButton
                   type="submit"
+                  disabled={status === "sending"}
                   className="display adaptive-cta group mt-9 flex w-full items-center justify-center gap-2 rounded-full px-5 py-3.5 text-white-pure"
                   strength={0.12}
                 >
-                  {sent ? "Заявка отправлена ✓" : "Отправить заявку"}
-                  {!sent && (
+                  {status === "sending"
+                    ? "Отправляем..."
+                    : status === "sent"
+                      ? "Заявка отправлена ✓"
+                      : "Отправить заявку"}
+                  {status === "idle" && (
                     <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
                   )}
                 </MagneticButton>
-                <p className="mt-4 text-center text-xs text-muted-soft">
-                  Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности.
+                <p
+                  aria-live="polite"
+                  className={`mt-4 text-center text-xs ${
+                    status === "error" ? "text-acid" : "text-muted-soft"
+                  }`}
+                >
+                  {status === "error"
+                    ? errorMessage
+                      ? `Не удалось отправить: ${errorMessage}`
+                      : "Не удалось отправить заявку. Позвоните нам или попробуйте еще раз."
+                    : "Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности."}
                 </p>
               </form>
             </div>

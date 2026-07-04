@@ -304,6 +304,50 @@ html[data-theme="light"] .grain::before {
   will-change: transform, opacity;
 }
 
+.services-scan {
+  opacity: 0.66;
+  filter: blur(0.4px);
+}
+
+.services-scan-acid {
+  background: linear-gradient(90deg, transparent, rgba(236, 20, 44, 0.92), transparent);
+}
+
+.services-scan-blue {
+  background: linear-gradient(90deg, transparent, rgba(27, 78, 229, 0.72), transparent);
+}
+
+.services-ambient {
+  background: linear-gradient(to bottom, transparent, rgba(236, 20, 44, 0.045), transparent);
+}
+
+.services-card-shine {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  filter: blur(0.5px);
+}
+
+html[data-theme="light"] .services-scan {
+  opacity: 0.28;
+  filter: blur(1.5px);
+}
+
+html[data-theme="light"] .services-scan-acid {
+  background: linear-gradient(90deg, transparent, rgba(236, 20, 44, 0.48), transparent);
+}
+
+html[data-theme="light"] .services-scan-blue {
+  background: linear-gradient(90deg, transparent, rgba(17, 54, 169, 0.34), transparent);
+}
+
+html[data-theme="light"] .services-ambient {
+  background: linear-gradient(to bottom, transparent, rgba(17, 54, 169, 0.045), transparent);
+}
+
+html[data-theme="light"] .services-card-shine {
+  background: linear-gradient(90deg, transparent, rgba(17, 54, 169, 0.08), transparent);
+  filter: blur(1.2px);
+}
+
 .magnetic-cta {
   position: relative;
   isolation: isolate;
