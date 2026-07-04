@@ -38,7 +38,7 @@ export function BeforeAfter({ data }: { data: Case }) {
         dragging.current = true;
         setFromClientX(e.clientX);
       }}
-      className="group relative aspect-[16/10] w-full cursor-ew-resize select-none overflow-hidden rounded-2xl border border-line bg-graphite"
+      className="group relative mx-auto aspect-[3/4] max-h-[720px] w-full max-w-[540px] cursor-ew-resize select-none overflow-hidden rounded-2xl border border-line bg-graphite"
     >
       {/* AFTER (base layer) */}
       <img

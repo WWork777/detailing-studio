@@ -2,12 +2,16 @@
 
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { useState } from "react";
+import { MagneticLink } from "@/components/ui/Magnetic";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { SITE } from "@/lib/seo";
 
 const NAV = [
-  { label: "Философия", href: "/#about" },
+  { label: "О нас", href: "/#about" },
   { label: "Услуги", href: "/#services" },
   { label: "Процесс", href: "/#process" },
   { label: "Кейсы", href: "/#portfolio" },
+  { label: "Блог", href: "/blog" },
   { label: "Контакты", href: "/#footer" },
 ];
 
@@ -32,26 +36,26 @@ export function Header() {
       {!scrolled && (
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-ink/70 to-transparent backdrop-blur-sm [mask-image:linear-gradient(to_bottom,black_55%,transparent)] [-webkit-mask-image:linear-gradient(to_bottom,black_55%,transparent)]" />
       )}
-      <div className="relative z-50 mx-auto flex h-16 max-w-7xl items-center justify-between px-5 md:grid md:grid-cols-[1fr_auto_1fr] md:px-8">
+      <div className="relative z-50 mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-5 md:grid md:grid-cols-[auto_1fr_auto] md:gap-8 md:px-8">
         {/* Logo (left) */}
-        <a href="/" className="flex items-center gap-2.5 justify-self-start">
-          <span className="grid h-8 w-8 place-items-center rounded-md bg-acid text-ink">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-              <path d="M12 2 2 7v10l10 5 10-5V7L12 2Z" stroke="currentColor" strokeWidth="2" />
-            </svg>
-          </span>
-          <span className="display text-lg tracking-tight">
-            OBSIDIAN<span className="text-acid">.</span>
+        <a href="/" className="flex items-center gap-2.5 justify-self-start" aria-label={SITE.shortName}>
+          <img
+            src="/images/logo-autoreconstruction.png"
+            alt={SITE.shortName}
+            className="h-9 w-9 rounded-full border border-white/15 object-cover shadow-[0_0_24px_-12px_rgba(236,20,44,0.9)]"
+          />
+          <span className="display hidden text-[0.92rem] leading-none tracking-[0.02em] text-white-pure sm:inline">
+            {SITE.shortName}<span className="text-acid">.</span>
           </span>
         </a>
 
         {/* Nav (center) */}
-        <nav className="hidden items-center gap-8 justify-self-center md:flex">
+        <nav className="hidden items-center justify-center gap-5 justify-self-center md:flex xl:gap-7">
           {NAV.map((item) => (
             <a
               key={item.href}
               href={item.href}
-              className="group relative display text-[0.8rem] tracking-tight text-muted transition-colors hover:text-white-pure"
+              className="group relative text-sm font-semibold text-muted transition-colors hover:text-white-pure"
             >
               {item.label}
               <span className="absolute -bottom-1.5 left-0 h-px w-0 bg-acid transition-all duration-300 group-hover:w-full" />
@@ -62,18 +66,20 @@ export function Header() {
         {/* CTA (right) */}
         <div className="flex items-center gap-3 justify-self-end">
           <a
-            href="tel:+73842000000"
-            className="mono hidden items-center gap-2 text-xs tracking-[0.12em] text-white-pure/90 transition-colors hover:text-acid lg:flex"
+            href={SITE.phoneHref}
+            className="hidden shrink-0 items-center gap-2 whitespace-nowrap text-sm font-semibold text-white-pure/90 transition-colors hover:text-acid lg:flex"
           >
             <span className="h-1.5 w-1.5 rounded-full bg-acid" />
-            +7 (3842) 00-00-00
+            {SITE.phone}
           </a>
-          <a
+          <MagneticLink
             href="/#footer"
-            className="display hidden items-center gap-2 rounded-full bg-acid px-5 py-2 text-sm tracking-tight text-ink transition-transform duration-300 hover:scale-[1.04] md:inline-flex"
+            className="display adaptive-cta hidden shrink-0 items-center gap-2 rounded-full px-5 py-2 text-sm text-white-pure md:inline-flex"
+            strength={0.2}
           >
             Записаться
-          </a>
+          </MagneticLink>
+          <ThemeToggle />
           <button
             aria-label="Меню"
             onClick={() => setOpen((v) => !v)}
@@ -127,7 +133,7 @@ export function Header() {
                     className="group flex items-baseline gap-4 border-b border-white/5 py-3 text-white-pure"
                   >
                     <span className="mono text-xs text-acid">{`0${i + 1}`}</span>
-                    <span className="display text-4xl tracking-tight transition-colors group-hover:text-acid">
+                    <span className="display card-title text-3xl transition-colors group-hover:text-acid sm:text-4xl">
                       {item.label}
                     </span>
                   </motion.a>
@@ -135,18 +141,19 @@ export function Header() {
               </nav>
 
               <motion.div variants={overlayItem} className="space-y-5">
-                <a
+                <MagneticLink
                   href="/#footer"
                   onClick={() => setOpen(false)}
-                  className="display flex items-center justify-center gap-2 rounded-full bg-acid py-4 tracking-tight text-ink shadow-[0_0_24px_rgba(194,255,46,0.35)]"
+                  className="display adaptive-cta flex items-center justify-center gap-2 rounded-full px-5 py-4 text-white-pure"
+                  strength={0.18}
                 >
                   Записаться →
-                </a>
+                </MagneticLink>
                 <a
-                  href="tel:+73842000000"
+                  href={SITE.phoneHref}
                   className="mono block text-center text-sm tracking-[0.12em] text-muted transition-colors hover:text-acid"
                 >
-                  +7 (3842) 00-00-00
+                  {SITE.phone}
                 </a>
               </motion.div>
             </motion.div>

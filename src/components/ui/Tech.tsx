@@ -22,7 +22,7 @@ export function Marker({
   className?: string;
 }) {
   return (
-    <span className={`mono text-[0.65rem] uppercase tracking-[0.2em] text-muted-soft ${className}`}>
+    <span className={`mono text-[0.65rem] uppercase text-muted-soft ${className}`}>
       {children}
     </span>
   );
@@ -30,10 +30,10 @@ export function Marker({
 
 /** Section eyebrow with index + label + animated leading line. */
 export function SectionLabel({ index, children }: { index: string; children: ReactNode }) {
+  void index;
   return (
-    <div className="flex items-center gap-3">
-      <span className="mono text-xs text-acid">{index}</span>
-      <span className="h-px w-8 bg-acid/60" />
+    <div className="flex min-w-0 flex-wrap items-center gap-2 sm:gap-3">
+      <span className="h-px w-6 bg-acid/60 sm:w-8" />
       <span className="eyebrow">{children}</span>
     </div>
   );

@@ -1,0 +1,10 @@
+/* TEAM */
+Studio: Автореконструкция
+Site: https://detailing-kemerovo.ru
+Contact: info@detailing-kemerovo.ru
+Location: Кемерово, Россия
+
+/* SITE */
+Language: Russian
+Stack: Next.js, React, Tailwind CSS
+Services: detailing, polishing, PPF, ceramic coating, interior cleaning

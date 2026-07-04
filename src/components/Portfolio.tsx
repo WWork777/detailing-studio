@@ -11,22 +11,23 @@ export function Portfolio() {
   return (
     <section
       id="portfolio"
-      className="relative overflow-hidden border-t border-white/5 bg-ink py-24 md:py-32"
+      className="relative overflow-hidden border-t border-white/5 bg-ink py-20 md:py-28"
     >
       <div className="pointer-events-none absolute inset-0 grid-bg grid-bg-fade opacity-40" />
       <div className="relative mx-auto max-w-7xl px-5 md:px-8">
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <Reveal>
             <div>
-              <SectionLabel index="03">Реальные кейсы</SectionLabel>
-              <h2 className="display mt-5 text-[clamp(2rem,5vw,3.6rem)] text-white-pure">
-                До&nbsp;/&nbsp;После
+              <SectionLabel index="03">Оклейка авто до / после</SectionLabel>
+              <h2 className="display section-title mt-5 text-white-pure">
+                Бронепленка PPF: процесс и готовый результат
               </h2>
             </div>
           </Reveal>
           <Reveal delay={0.1}>
             <p className="max-w-sm text-muted">
-              Потяните ползунок, чтобы оценить результат работы наших мастеров вживую.
+              Показываем этап нанесения защитной пленки и финальный вид автомобиля после
+              оклейки в боксе студии «Автореконструкция».
             </p>
           </Reveal>
         </div>
@@ -38,16 +39,16 @@ export function Portfolio() {
 
           <Reveal delay={0.12}>
             <div>
-              <h3 className="display text-3xl text-white-pure md:text-4xl">
+              <h3 className="display card-title text-2xl text-white-pure md:text-4xl">
                 {featured.title}
               </h3>
               <p className="mt-3 text-muted">{featured.meta}</p>
 
               <ul className="mt-8 space-y-4">
                 {[
-                  "Замер толщины ЛКП по 40 точкам",
-                  "Трёхэтапная коррекция лака",
-                  "Керамика 9H с гарантией 9 лет",
+                  "Подготовка поверхности перед оклейкой",
+                  "Нанесение PPF-пленки на зоны риска",
+                  "Финальный контроль кромок и блеска",
                 ].map((item) => (
                   <li key={item} className="flex items-center gap-3 text-white-pure">
                     <span className="grid h-6 w-6 place-items-center rounded-full border border-acid/50 text-xs text-acid">
@@ -60,9 +61,9 @@ export function Portfolio() {
 
               <a
                 href="#footer"
-                className="display mt-10 inline-flex items-center gap-3 rounded-full border border-line px-6 py-3.5 text-sm tracking-tight text-white-pure transition-colors hover:border-acid hover:text-acid"
+                className="display adaptive-cta mt-10 inline-flex w-full items-center gap-3 rounded-full border border-line px-5 py-3.5 text-sm text-white-pure transition-colors hover:border-acid hover:text-acid sm:w-auto sm:px-6"
               >
-                Обсудить мой автомобиль →
+                Рассчитать оклейку пленкой →
               </a>
             </div>
           </Reveal>

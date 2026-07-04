@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { SLIDES } from "@/lib/data";
+import { MagneticLink } from "@/components/ui/Magnetic";
 
 const DURATION = 6000; // ms per slide
 
@@ -30,7 +31,7 @@ export function Hero() {
   return (
     <section
       id="top"
-      className="relative h-[100svh] min-h-[640px] w-full overflow-hidden bg-ink"
+      className="relative min-h-[100svh] w-full overflow-hidden bg-ink"
     >
       {/* Slides — split-curtain clip reveal */}
       <AnimatePresence initial={false}>
@@ -62,26 +63,10 @@ export function Hero() {
 
       {/* Tech grid + HUD overlay */}
       <div className="pointer-events-none absolute inset-0 z-10 grid-bg opacity-[0.5]" />
-      <div className="pointer-events-none absolute inset-0 z-10 mx-auto hidden max-w-[1440px] px-10 md:block">
-        {/* corner frame */}
-        <span className="absolute left-10 top-24 h-8 w-8 border-l border-t border-acid/40" />
-        <span className="absolute right-10 top-24 h-8 w-8 border-r border-t border-acid/40" />
-        {/* top markers */}
-        <div className="absolute left-10 top-28 mono text-[0.65rem] uppercase tracking-[0.2em] text-muted-soft">
-          LAT 55.7558 · LON 37.6173
-        </div>
-        <div className="absolute right-10 top-28 mono text-right text-[0.65rem] uppercase tracking-[0.2em] text-muted-soft">
-          UNIT / OBSIDIAN-MSK-01
-        </div>
-        {/* vertical side label */}
-        <div className="absolute right-10 top-1/2 mono -translate-y-1/2 rotate-90 text-[0.6rem] uppercase tracking-[0.4em] text-muted-soft">
-          Detailing Protocol
-        </div>
-      </div>
 
       {/* Content */}
-      <div className="relative z-20 mx-auto flex h-full max-w-[1440px] flex-col justify-end px-6 pb-28 md:px-10 md:pb-24">
-        <div className="max-w-2xl">
+      <div className="relative z-20 mx-auto flex min-h-[100svh] max-w-[1440px] flex-col justify-end px-5 pb-20 pt-24 sm:px-6 md:px-10 md:pb-24">
+        <div className="max-w-4xl">
           <AnimatePresence mode="wait">
             <motion.div
               key={slide.id}
@@ -100,14 +85,14 @@ export function Hero() {
               </motion.div>
 
               <h1 className="sr-only">
-                Детейлинг в Кемерово — студия OBSIDIAN: керамическое покрытие,
-                полировка кузова, оклейка плёнкой и химчистка авто
+                Детейлинг авто в Кемерово — химчистка салона, полировка кузова и фар,
+                бронепленка PPF, оклейка авто пленкой и защита кузова
               </h1>
 
               <motion.div
                 variants={lineVariant}
                 role="text"
-                className="display text-[clamp(2.6rem,8vw,6.4rem)] text-white-pure"
+                className="display hero-title text-white-pure"
               >
                 {slide.title}
               </motion.div>
@@ -120,20 +105,20 @@ export function Hero() {
               </motion.p>
 
               <motion.div variants={lineVariant} className="mt-9 flex flex-wrap items-center gap-4">
-                <a
+                <MagneticLink
                   href="#footer"
-                  className="display group relative inline-flex items-center gap-3 overflow-hidden rounded-full bg-acid px-7 py-3.5 tracking-tight text-ink"
+                  className="display adaptive-cta group inline-flex w-full items-center gap-3 rounded-full px-5 py-3.5 text-sm text-white-pure sm:w-auto sm:px-7 sm:text-base"
                 >
-                  <span className="relative z-10">Записаться на детейлинг</span>
+                  <span className="relative z-10">Рассчитать детейлинг в Кемерово</span>
                   <span className="relative z-10 transition-transform duration-300 group-hover:translate-x-1">
                     →
                   </span>
-                </a>
+                </MagneticLink>
                 <a
                   href="#portfolio"
-                  className="display inline-flex items-center gap-2 rounded-full border border-line px-6 py-3.5 text-sm tracking-tight text-white-pure transition-colors hover:border-acid hover:text-acid"
+                  className="display adaptive-cta inline-flex w-full items-center gap-2 rounded-full border border-line px-5 py-3.5 text-sm text-white-pure transition-colors hover:border-acid hover:text-acid sm:w-auto sm:px-6"
                 >
-                  Смотреть кейсы
+                  Смотреть полировку до / после
                 </a>
               </motion.div>
             </motion.div>
